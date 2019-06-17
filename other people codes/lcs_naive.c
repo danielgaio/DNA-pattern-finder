@@ -23,7 +23,7 @@ int max(int a, int b){
 }
 
 /* Driver program to test above function */
-int main(){ 
+int main(){
 char X[] = "AGGTAB";
 char Y[] = "GXTXAYB";
 

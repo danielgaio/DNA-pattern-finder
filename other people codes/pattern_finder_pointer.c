@@ -16,7 +16,7 @@ int main()
    position = match(a, b);
    
    if(position!=-1)
-      printf("Found at location %d\n", position+1);
+      printf("Text %s found at location %d\n", b, position+1);
    else
       printf("Not found.\n");
      
@@ -32,18 +32,18 @@ int match(char *a, char *b)
    x = a;
    y = b;
    
-   while(*a)
+   while(*a)   // enquanto houver texto
    {
       while(*x==*y)
       {
          x++;
          y++;
          if(*x=='\0'||*y=='\0')
-            break;        
-      }  
+            break;
+      }
       if(*y=='\0')
          break;
-         
+
       a++;
       position++;
       x = a;
@@ -52,5 +52,5 @@ int match(char *a, char *b)
    if(*a)
       return position;
    else  
-      return -1;  
+      return -1;
 }
