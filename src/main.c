@@ -11,6 +11,7 @@
 
 int maior_subsequencia( char *texto, char *palavra, int tam_texto, int tam_palavra );
 int max(int a, int b);
+int busca_subsequencia(char *, char *palavra);
 
 int count = 0;
 
@@ -18,7 +19,7 @@ int main() {
 	char *nome_seq1 = "seq1-10.txt";	// <<---- _ indicar nomes arquivos
 	char *nome_seq2 = "seq2-10.txt";	// <<----			
 	char palavra_aux[tam_seq];
-	int posicao, flag_parada = 0, leitura_reversa = 1;
+	int posicao;
 
 	//============= carrega sequencia 1 ===============
 	FILE *file1;
@@ -46,6 +47,60 @@ int main() {
 	printf("Seq 2: %s\n\n", palavra);
 	//============= carrega sequencia 2 ===============
 
+
+
+	//============= busca força bruta ===============
+	strcpy(palavra_aux, palavra);
+
+	// tenta combinações diminuindo a palavra a partir do fim
+	for(int i = 1; i < tam_seq; i++){
+		posicao = busca_subsequencia(texto, palavra_aux);
+		/*
+		if(posicao != -1){
+			printf("                                  	texto	: %s\n", texto);
+			printf("iteração: %i - posição match: %i -	palavra	: %s\n", i, posicao+1, palavra_aux);
+		}
+		*/
+		// remove ultimo caractere
+		palavra_aux[(strlen(palavra_aux)-1)] = '\0';
+	}
+	printf("\n");
+
+
+	strcpy(palavra_aux, palavra);
+
+	// tenta combinações diminuindo a palavra a partir do inicio
+	for(int i = 1; i < tam_seq; i++){
+		posicao = busca_subsequencia(texto, palavra_aux);
+		/*
+		if(posicao != -1){
+			printf("                                  	texto	: %s\n", texto);
+			printf("iteração: %i - posição match: %i - 	palavra	: %s\n", i, posicao+1, palavra_aux);
+		}
+		*/
+
+		// remove o primeiro caractere da palavra
+		for(int j = 0; j < strlen(palavra_aux); j++){
+			palavra_aux[j] = palavra_aux[j+1];
+		}
+	}
+
+	
+
+
+	posicao = busca_subsequencia(texto, "tttttttta");
+	printf("                   	texto	: %s\n", texto);
+	printf("posição match: %i -	palavra	: tttttttta\n", posicao+1);
+
+
+
+
+
+
+	//============= busca força bruta ===============
+
+
+
 	//============= busca por divisão e conquista ===============
 	int tam_texto = strlen(texto);
 	int tam_palavra = strlen(palavra);
@@ -67,3 +122,32 @@ int maior_subsequencia( char *texto, char *palavra, int tam_texto, int tam_palav
 int max(int a, int b){ return (a > b)? a : b; }
 
 // função força bruta (2 loops)
+int busca_subsequencia(char *texto, char *palavra){
+   	int c;
+   	int posicao_match = 0;
+   	char *x, *y;
+   
+   	x = texto;
+   	y = palavra;
+
+	printf("*texto: %s - palavra: %s\n", x, y);
+
+	// enquanto houver texto
+	while(*texto){
+		// verifica se caractere da palavra é igual ao do texto
+      	while(*x == *y){
+         	x++;
+         	y++;
+		 	// se o texto ou a palavra terminar, pare
+         	if(*x == '\0' || *y == '\0') break;
+      	}
+      	if(*y == '\0') break;
+
+      	texto++;
+      	posicao_match++;
+      	x = texto;
+      	y = palavra;
+   	}
+   	if(*texto) return posicao_match;
+   	else return -1;
+}
