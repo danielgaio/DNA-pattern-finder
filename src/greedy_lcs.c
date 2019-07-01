@@ -1,20 +1,21 @@
-// gcc main.c -o main
+// Comando para compilação:
+// gcc greedy_lcs.c -o g_lcs
+// Comando para rodar:
+// ./g_lcs
 
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <time.h>
-#define tam_seq 29	// <<---- indicar num. caracteres nos arquivos (+1 para o caractere de fim de string)
+#define tam_seq 31	// <<---- indicar num. caracteres nos arquivos (+1 para o caractere de fim de string)
 
 // Considerações: seq"n" será o Texto, seq"n+1" será a Palavra a ser buscada no texto
 // Em sua versão básica a complexidade é O(N*M), sendo N o tamanho da palavra e M o tamanho do texto
 
-int tam_maior_subsequencia( char *texto, char *palavra, int tam_texto, int tam_palavra );
-int max(int a, int b);
 int busca_subsequencia(char *, char *palavra);
 
-int count = 0;
+//int count = 0;
 
 int main() {
 	// contagem do tempo
@@ -52,21 +53,26 @@ int main() {
 	printf("Seq 2: %s\n\n", palavra);
 	//============= carrega sequencia 2 ===============
 	
-	//============= busca força bruta ===============
+	
+	//============= busca gulosa ===============
 	strcpy(palavra_aux, palavra);
 
 	// tenta combinações diminuindo a palavra a partir do fim
+    printf("Rodando com diminuição decrecente da segunda sequencia:\n\n");
 	for(int i = 1; i < tam_seq; i++){
 		posicao = busca_subsequencia(texto, palavra_aux);
 		if(posicao != -1){
-			printf("---------------------------------	texto	: %s\n", texto);
-			printf("iteração: %i - posição match: %i -	palavra	: %s\n", i, posicao+1, palavra_aux);
+			//printf("---------------------------------	Texto	: %s\n", texto);
+			printf("Iteração: %i - Posição do match: %i -	Palavra	: %s\n", i, posicao+1, palavra_aux);
 		}
 		// remove ultimo caractere
 		palavra_aux[(strlen(palavra_aux)-1)] = '\0';
 	}
 	printf("\n");
 
+    printf("Rodando com diminuição decrecente da segunda sequencia:\n\n");
+
+	// tenta combinações invertendo as sequencias, diminuindo o texto a partir do fim
 	strcpy(palavra_aux, texto);
 	char texto_aux[tam_seq];
 	strcpy(texto_aux, palavra);
@@ -76,46 +82,22 @@ int main() {
 		posicao = busca_subsequencia(texto_aux, palavra_aux);
 		
 		if(posicao != -1){
-			printf("---------------------------------	texto	: %s\n", texto);
-			printf("iteração: %i - posição match: %i - 	palavra	: %s\n", i, posicao+1, palavra_aux);
+			//printf("---------------------------------	Texto	: %s\n", texto);    // descomentar se quizer comparar texto e palavra
+			printf("Iteração: %i - Posição do match: %i -	Palavra	: %s\n", i, posicao+1, palavra_aux);
 		}
 		// remove ultimo caractere
 		palavra_aux[(strlen(palavra_aux)-1)] = '\0';
 	}
-	//============= busca força bruta ===============
+	//============= busca gulosa ===============
 	
-	/*
-	//============= busca por divisão e conquista ===============
-	int tam_texto = strlen(texto);
-	int tam_palavra = strlen(palavra);
-	printf("O tamanho da maior subsequencia comum eh: %i\n", tam_maior_subsequencia(texto, palavra, tam_texto, tam_palavra));
-	printf("A maior subsequencia eh: [não implementado]\n");
-	//============= busca por divisão e conquista ===============
-	*/
 
 	tFim = clock();
 	tDecorrido = ((tFim - tInicio) / (CLOCKS_PER_SEC / 1000));
-	printf("\n\nduração execução: %ld ms\n", tDecorrido);
+	printf("\n\nDuração da execução: %ld ms\n", tDecorrido);
 
 	return 0;
 }
 
-// função divisão e conquista
-int tam_maior_subsequencia( char *texto, char *palavra, int tam_texto, int tam_palavra ){
-	// base de recurção
-    if (tam_texto == 0 || tam_palavra == 0){
-		printf("%c", palavra[tam_palavra-1]);
-		return 0;
-	}
-    if (texto[tam_texto-1] == palavra[tam_palavra-1]){
-		
-		return 1 + tam_maior_subsequencia(texto, palavra, tam_texto-1, tam_palavra-1);
-	}else return max(tam_maior_subsequencia(texto, palavra, tam_texto, tam_palavra-1), tam_maior_subsequencia(texto, palavra, tam_texto-1, tam_palavra));
-}
-
-int max(int a, int b){ return (a > b)? a : b; }
-
-// função força bruta (2 loops)
 int busca_subsequencia(char *texto, char *palavra){
    	int c;
    	int posicao_match = 0;
