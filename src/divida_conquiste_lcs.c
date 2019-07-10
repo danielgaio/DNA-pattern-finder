@@ -79,14 +79,18 @@ int main() {
 
 	//============= busca por divisão e conquista ===============
 	printf("\n\nTamanho da maior subsequencia: %i\n", tam_maior_subsequencia(seq1, seq2, tam_seq1, tam_seq2));
-	printf("Maior subsequencia: [não implementado]\n");
+	printf("Maior subsequencia: [nao implementado]\n", );
 	//============= busca por divisão e conquista ===============
 	
 	// Encerramento do algoritmo
 	tFim = clock();
 	tDecorrido = ((tFim - tInicio) / (CLOCKS_PER_SEC / 1000));
-	printf("\n\nDuração da execução: %ld ms\n", tDecorrido);
+	printf("\n\nDuracao da execucao: %ld ms\n", tDecorrido);
 	return 0;
+}
+
+maior_subsequencia(seq1, seq2, tam_seq1, tam_seq2){
+
 }
 
 // função divisão e conquista

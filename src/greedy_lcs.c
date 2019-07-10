@@ -22,22 +22,37 @@ int main() {
 	clock_t tInicio, tFim, tDecorrido;
 	tInicio = clock();
 
-	char *nome_seq1 = "seq1-10.txt";	// <<---- _ indicar nomes arquivos
-	char *nome_seq2 = "seq2-10.txt";	// <<----			
-	char palavra_aux[tam_seq];
-	int posicao;
+	// Coleta dos nomes das sequencias que serão comparadas
+	printf("Digite o numero de caracteres da sequencia 1: ");
+	int tam_seq1 = 0;
+	scanf("%d", &tam_seq1);
+	printf("Digite o nome do arquivo da sequencia 1: ");
+	char nome_seq1[tam_seq1];
+	scanf("%s", nome_seq1);
+
+	printf("Digite o numero de caracteres da sequencia 2: ");
+	int tam_seq2 = 0;
+	scanf("%d", &tam_seq2);
+	printf("Digite o nome do arquivo da sequencia 2: ");
+	char nome_seq2[tam_seq2];
+	scanf("%s", nome_seq2);
+
+	// Exibição dos nomes dos arquivos
+	printf("Seq 1: %s - %d\n", nome_seq1, tam_seq1);
+	printf("Seq 2: %s - %d\n", nome_seq2, tam_seq2);
 
 	//============= carrega sequencia 1 ===============
 	FILE *file1;
     file1 = fopen(nome_seq1, "r");
     
+	// Checar se arquivo foi aberto
     if(file1 == NULL) printf("Arquivo inexistente\n");
 
-	char texto[tam_seq];
+	char seq1[tam_seq1];
 
-    fscanf(file1, "%s", texto);
-
-	printf("Seq 1: %s\n", texto);
+    fscanf(file1, "%s", seq1);
+	printf("Seq 1: %s\n", seq1);
+	fclose(file1);
 	//============= carrega sequencia 1 ===============
 
 	//============= carrega sequencia 2 ===============
@@ -46,11 +61,12 @@ int main() {
     
     if(file2 == NULL) printf("Arquivo inexistente\n");
 
-	char palavra[tam_seq];
+	char seq2[tam_seq2];
 
-    fscanf(file2, "%s", palavra);
+    fscanf(file2, "%s", seq2);
+	printf("Seq 2: %s\n\n", seq2);
 
-	printf("Seq 2: %s\n\n", palavra);
+	fclose(file2);
 	//============= carrega sequencia 2 ===============
 	
 	
@@ -58,19 +74,19 @@ int main() {
 	strcpy(palavra_aux, palavra);
 
 	// tenta combinações diminuindo a palavra a partir do fim
-    printf("Rodando com diminuição decrecente da segunda sequencia:\n\n");
+    printf("Rodando com diminuicao decrecente da segunda sequencia:\n\n");
 	for(int i = 1; i < tam_seq; i++){
 		posicao = busca_subsequencia(texto, palavra_aux);
 		if(posicao != -1){
 			//printf("---------------------------------	Texto	: %s\n", texto);
-			printf("Iteração: %i - Posição do match: %i -	Palavra	: %s\n", i, posicao+1, palavra_aux);
+			printf("Iteracao: %i - Posicao do match: %i -	Palavra	: %s\n", i, posicao+1, palavra_aux);
 		}
 		// remove ultimo caractere
 		palavra_aux[(strlen(palavra_aux)-1)] = '\0';
 	}
 	printf("\n");
 
-    printf("Rodando com diminuição decrecente da segunda sequencia:\n\n");
+    printf("Rodando com diminuicao decrecente da segunda sequencia:\n\n");
 
 	// tenta combinações invertendo as sequencias, diminuindo o texto a partir do fim
 	strcpy(palavra_aux, texto);
@@ -83,7 +99,7 @@ int main() {
 		
 		if(posicao != -1){
 			//printf("---------------------------------	Texto	: %s\n", texto);    // descomentar se quizer comparar texto e palavra
-			printf("Iteração: %i - Posição do match: %i -	Palavra	: %s\n", i, posicao+1, palavra_aux);
+			printf("Iteracao: %i - Posicao do match: %i -	Palavra	: %s\n", i, posicao+1, palavra_aux);
 		}
 		// remove ultimo caractere
 		palavra_aux[(strlen(palavra_aux)-1)] = '\0';
@@ -93,7 +109,7 @@ int main() {
 
 	tFim = clock();
 	tDecorrido = ((tFim - tInicio) / (CLOCKS_PER_SEC / 1000));
-	printf("\n\nDuração da execução: %ld ms\n", tDecorrido);
+	printf("\n\nDuracao da execucao: %ld ms\n", tDecorrido);
 
 	return 0;
 }
